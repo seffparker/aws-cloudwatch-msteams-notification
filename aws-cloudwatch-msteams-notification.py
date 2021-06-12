@@ -1,7 +1,8 @@
 # CloudWatch SNS Notificaitons into Microsoft Teams
 # Author: Seff Parker
-# Version: 20210612
+# Version: 1.0.0 20210612
 # URL: https://github.com/seffparker/aws-cloudwatch-msteams-notification
+# Original Version: https://medium.com/@sebastian.phelps/aws-cloudwatch-alarms-on-microsoft-teams-9b5239e23b64
 
 import json
 import logging
@@ -42,7 +43,7 @@ def lambda_handler(event, context):
 
     base_data = {
         "colour": state_colour,
-        "title": new_state + ": " + alarm_name,
+        "title": "CloudWatch: " + alarm_name,
         "info": [ 
             { "facts":
                 [{ "name": "Status", "value": "Changed from " + old_state + " to " + new_state },
