@@ -1,6 +1,6 @@
 # CloudWatch SNS Notificaitons into Microsoft Teams
 # Author: Seff Parker
-# Version: 1.0.0 20210612
+# Version: 1.0.1 20210612
 # URL: https://github.com/seffparker/aws-cloudwatch-msteams-notification
 # Original Version: https://medium.com/@sebastian.phelps/aws-cloudwatch-alarms-on-microsoft-teams-9b5239e23b64
 
@@ -26,9 +26,26 @@ def lambda_handler(event, context):
     old_state = message['OldStateValue']
     new_state = message['NewStateValue']
     reason = message['NewStateReason']
-    namespace = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Namespace']
-    resource = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Dimensions'][0]['value']
-    metric = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['MetricName']
+    
+    if 'Namespace' in message['Trigger']:
+        namespace = message['Trigger']['Namespace']
+    elif 'Metrics' in message['Trigger']:
+        namespace = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Namespace']
+    else:
+        namespace = "unknown_namespace"
+
+    if 'MetricName' in message['Trigger']:
+        metric = message['Trigger']['MetricName']
+    elif 'Metrics' in message['Trigger']:
+        metric = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['MetricName']
+    else:
+        metric = "unknown_metric"
+    
+    if 'Metrics' in message['Trigger']:
+        resource = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Dimensions'][0]['value']
+    else:
+        resource = ""
+        
     if "AccountId" in os.environ:
         awsAccountId = os.environ['AccountId']
     else:
