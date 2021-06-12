@@ -24,5 +24,5 @@ This is an improved version of https://medium.com/@sebastian.phelps/aws-cloudwat
 # Microsoft Teams Incoming Webhook
 Refer [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook) to generate a WebHook URL for a Teams Channel.
 
-# Sample Notificaiton
+# Sample Notification
 ![Sample Teams Notification](/cloudwatch-teams-notification.png)
