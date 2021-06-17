@@ -1,6 +1,6 @@
 # CloudWatch SNS Notificaitons into Microsoft Teams
 # Author: Seff Parker
-# Version: 1.0.1 20210612
+# Version: 1.0.2 20210617
 # URL: https://github.com/seffparker/aws-cloudwatch-msteams-notification
 # Original Version: https://medium.com/@sebastian.phelps/aws-cloudwatch-alarms-on-microsoft-teams-9b5239e23b64
 
@@ -32,7 +32,7 @@ def lambda_handler(event, context):
     elif 'Metrics' in message['Trigger']:
         namespace = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Namespace']
     else:
-        namespace = "unknown_namespace"
+        namespace = ""
 
     if 'MetricName' in message['Trigger']:
         metric = message['Trigger']['MetricName']
@@ -41,7 +41,9 @@ def lambda_handler(event, context):
     else:
         metric = "unknown_metric"
     
-    if 'Metrics' in message['Trigger']:
+    if 'Dimensions' in message['Trigger']:
+        resource = message['Trigger']['Dimensions'][0]['value']
+    elif 'Metrics' in message['Trigger']:
         resource = message['Trigger']['Metrics'][0]['MetricStat']['Metric']['Dimensions'][0]['value']
     else:
         resource = ""
@@ -54,7 +56,7 @@ def lambda_handler(event, context):
     if new_state.lower() == 'alarm':
         state_colour = "ff3300"
     elif new_state.lower() == 'ok':
-        state_colour = "009900"
+        state_colour = "00cc00"
     else:
         state_colour = "cccccc"
 
